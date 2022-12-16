@@ -5,3 +5,5 @@ Classes where there are no coefficients available are not in this collection.
 Missing:
 - 2BI-FR
 - 1BI-FR
+- 2BI-EN
+- 1BI-EN
