@@ -14,7 +14,7 @@ PARSER.add_argument("-c", "--coefficient", action="store_false",
                     help="If flag is used, coefficients won't be stored")
 PARSER.add_argument("-l", "--lessons", action="store_false",
                     help="If flag is used, number of lessons won't be stored")
-PARSER.add_argument("-s", "-sublessons", action="store_false",
+PARSER.add_argument("-s", "--sublessons", action="store_false",
                     help="If flag is used, sublessons won't be stored (= lessons that are made up of multiple lessons will only have the main lesson name saved but not the lessons it is composed from")
 
 ARGS = PARSER.parse_args()
@@ -153,7 +153,8 @@ class CLASS():
             if subject != "None":
                 # If there were combi subjects in the subject before, save them and reset combi subjects list
                 if len(self.current_combis) > 0:
-                    self.current_subject["subsubjects"] = self.current_combis
+                    if ARGS.sublessons:
+                        self.current_subject["subsubjects"] = self.current_combis
                     self.current_combis = []
                     self.current_subject = {}
 
@@ -162,8 +163,11 @@ class CLASS():
                     self.current_coef = coef
 
                 self.current_subject["name"] = subject
-                self.current_subject["lessons"] = lessons
-                self.current_subject["coef"] = self.current_coef
+                if ARGS.lessons:
+                    self.current_subject["lessons"] = lessons
+
+                if ARGS.coefficient:
+                    self.current_subject["coef"] = self.current_coef
 
                 # If there is a combi subject
                 if combiname != "None":
@@ -171,6 +175,7 @@ class CLASS():
                         "name": combiname,
                         "coef": combicoef
                     })
+
 
                 self.subjects.append(self.current_subject)
 
