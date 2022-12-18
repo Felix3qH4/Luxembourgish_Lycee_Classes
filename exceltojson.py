@@ -4,46 +4,54 @@ import pandas as pd
 import json
 
 
-## Command line
+# Command line
 PARSER = argparse.ArgumentParser(description="Type --help for help")
 
-PARSER.add_argument("-f", "--files", nargs="+", help="Specify specific files that should be converted from excel to json files")
-PARSER.add_argument("-c", "--coefficient", action="store_false", help="If flag is used, coefficients won't be stored")
-PARSER.add_argument("-l", "--lessons", action="store_false", help="If flag is used, number of lessons won't be stored")
-PARSER.add_argument("-s", "-sublessons", action="store_false", help="If flag is used, sublessons won't be stored (= lessons that are made up of multiple lessons will only have the main lesson name saved but not the lessons it is composed from")
+# Add arguments '-f', '-c', '-l', '-s'
+PARSER.add_argument("-f", "--files", nargs="+",
+                    help="Specify specific files that should be converted from excel to json files")
+PARSER.add_argument("-c", "--coefficient", action="store_false",
+                    help="If flag is used, coefficients won't be stored")
+PARSER.add_argument("-l", "--lessons", action="store_false",
+                    help="If flag is used, number of lessons won't be stored")
+PARSER.add_argument("-s", "-sublessons", action="store_false",
+                    help="If flag is used, sublessons won't be stored (= lessons that are made up of multiple lessons will only have the main lesson name saved but not the lessons it is composed from")
 
 ARGS = PARSER.parse_args()
-## / Command line /
+# / Command line /
 
-EXCEL_FILE_CLASSIQUE : str = "Classique_Classes.xlsx"
-EXCEL_FILE_GENERAL : str = ""
-EXCEL_FILE_GERMANO_LUX : str = ""
+# Default excel files
+EXCEL_FILE_CLASSIQUE: str = "Classique_Classes.xlsx"
+EXCEL_FILE_GENERAL: str = ""
+EXCEL_FILE_GERMANO_LUX: str = ""
 
 #EXCEL_FILES : list = [EXCEL_FILE_CLASSIQUE, EXCEL_FILE_GENERAL, EXCEL_FILE_GERMANO_LUX]
-EXCEL_FILES : list = [EXCEL_FILE_CLASSIQUE]
+EXCEL_FILES: list = [EXCEL_FILE_CLASSIQUE]
 
 
+def parse_excel_file(file: str) -> None:
+    """
+    This is where the file will be broken down into 1st the blocks (ex.: 7ème, 6ème) and then the different classes (ex.: 7C, 7I-EN)
 
+    :param file: Name of the file that should be parsed (str)
+    :returns None
+    """
 
-def parse_excel_file(file : str) -> None:
     print(f"[DEBUG]: Parsing file - {file}")
 
-    ## Output
-    json_data : list[dict[str, list[dict[str, float, float]]]] = []
+    # Output data that will be written to the file
+    json_data: list[dict[str, list[dict[str, float, float]]]] = []
 
-    ## Read the excel file and replace NaN (=empty fields) 
+    # Read the excel file and replace NaN (=empty fields)
     data = pd.read_excel(file)
     data.fillna("None", inplace=True)
 
-
-    #data_x_length = data.shape[1]
-
-    ## Get the names of the columns (ex.: ClassNames, SubjectName)
+    # Get the names of the columns (ex.: ClassNames, SubjectName)
     column_names = data.axes[1].tolist()
 
     current_index = 0
 
-    ## Get the "ClassNames" and other column names (ex.: ClassNames, ClassNames.1, ClassNames.2)
+    # Get the "ClassNames" and other column names (ex.: ClassNames, ClassNames.1, ClassNames.2)
     classnames_str = [i for i in column_names if i.startswith('ClassNames')]
     subjectnames_str = [i for i in column_names if i.startswith('SubjectName')]
     subjectlessons_str = [i for i in column_names if i.startswith('SubjectLessons')]
@@ -51,10 +59,13 @@ def parse_excel_file(file : str) -> None:
     combinames_str = [i for i in column_names if i.startswith('CombiName')]
     combicoefs_str = [i for i in column_names if i.startswith('CombiCoef')]
 
+    # 'pyclasses' or 'pyclass' stands for the classes inside python, to not mix it up with 'classes' in the schools
+    # A list of all the pyclasses CLASS() representing the different real classes
+    classes = []
 
-
+    # For each 'block' (ex.: 7ème classes or 6ème classes), check when a new class starts and create a CLASS() class for that pyclass
     for block in range(len(classnames_str)):
-        ## Get the data for the "ClassNames" and other columns 
+        # Get the data for the "ClassNames" and other columns
         classnames = data[classnames_str[current_index]]
         subjectnames = data[subjectnames_str[current_index]]
         subjectlessons = data[subjectlessons_str[current_index]]
@@ -63,186 +74,137 @@ def parse_excel_file(file : str) -> None:
         combicoefs = data[combicoefs_str[current_index]]
 
         current_index += 1
-        #print(f"[DEBUG]: Block Nr. {current_index}")
+        print(f"[DEBUG]: Block Nr. {current_index}")
 
-        line = 0
-        class_start_line = None
-        print(len(classnames.values))
+        # Starting line for parsing the data for class names
+        line: int = 0
+        # Starting line of a new class
+        class_start_line: int = None
+        # While the line we are at is smaller than the number of lines there are, parse
         while line < len(classnames.values):
+            # If there is a new class
             if classnames.values[line] != "None" or line+1 == len(classnames.values):
                 print(classnames.values[line])
+                # If there was a class before this one, set the endline of the class before
                 if class_start_line:
                     class_end_line = line
-                    class_data = parse_class(class_start_line, class_end_line, classnames, subjectnames, subjectlessons, subjectcoefs, combinames, combicoefs)
-                    json_data.append(class_data)
+                    new_class = CLASS(class_start_line, class_end_line, classnames,
+                                      subjectnames, subjectlessons, subjectcoefs, combinames, combicoefs)
+                    classes.append(new_class)
                     class_start_line = None
+
+                # If there was no class before, set the startline of this class (also when the class before was finished)
                 if not class_start_line:
                     class_start_line = line
-            
+
+            # Go to the next line
             line += 1
-        
+
+    # For each pyclass in the list, get the class representation and add it to the output for the json file
+    for _class in classes:
+        json_data.append(_class.__repr__())
 
     with open("output/out.json", "w", encoding="utf-8") as _file:
         json.dump(json_data, _file, ensure_ascii=False)
 
 
-def parse_class(startline:int, endline:int, classnames:pd.Series, subjectnames:pd.Series, subjectlessons:pd.Series, subjectcoefs:pd.Series, combinames:pd.Series, combicoefs:pd.Series) -> dict:
-    _class : dict[str, list]= {
-        "name": classnames.values[startline]
-    }
-    subjects : list[dict, dict] = []
+##########################
+## Class representation ##
+##########################
+class CLASS():
+    def __init__(self, startline: int, endline: int, classnames: pd.Series, subjectnames: pd.Series, subjectlessons: pd.Series, subjectcoefs: pd.Series, combinames: pd.Series, combicoefs: pd.Series):
+        self.startline = startline
+        self.endline = endline
+        self.classnames = classnames
+        self.subjectnames = subjectnames
+        self.subjectlessons = subjectlessons
+        self.subjectcoefs = subjectcoefs
+        self.combinames = combinames
+        self.combicoefs = combicoefs
 
-    coefficient = None
-    subject = {}
-    endline += 1
-    for line in range(endline-startline):
-        ## If there is a coefficient (1st line and when it changes)
-        if subjectcoefs.values[line] != "None":
-            coefficient = subjectcoefs.values[line]
-        
-        ## If there is a subject
-        if subjectnames.values[line] != "None":
-            subject["name"] = subjectnames.values[line]
-            subject["lessons"] = subjectlessons.values[line]
-            subject["coef"] = coefficient
-            subjects.append(subject)
-            #print(subject)
-            subject = {}
+        self.current_coef: int = None
+        self.current_subject: dict = {}
+        self.subjects = []
+        self.current_combis = []
 
-    print(f"ENDING CLASS AT LINE: {line}")
-    _class["subjects"] = subjects
-    print(_class)
-    #print(_class)
-    return _class
+        # Representation of the class which will then be written to the output file
+        self.class_repr = {
+            "name": self.classnames.values[startline], "subjects": self.subjects}
 
-    # ## For each block of rows
-    # for j in range(len(classnames_str)):
+        # Parse the lines to complete the data about this class
+        self.build()
 
-    #     ## Get the data for the "ClassNames" and other columns 
-    #     classnames = data[classnames_str[current_index]]
-    #     subjectnames = data[subjectnames_str[current_index]]
-    #     subjectlessons = data[subjectlessons_str[current_index]]
-    #     subjectcoefs = data[subjectcoefs_str[current_index]]
-    #     combinames = data[combinames_str[current_index]]
-    #     combicoefs = data[combicoefs_str[current_index]]
+    def __repr__(self) -> str:
+        return self.class_repr
 
-    #     classinfo : dict[str, list[str, float, float]] = {}
-    #     coefficient : int = None
-    #     combis = []
-    #     subjects = []
-        
-    #     ## For each line in the row (y axis)
-    #     for index in range(classnames.shape[0]):
+    def build(self):
+        # The current line we are processing
+        line: int = self.startline
 
-    #         ## If there is a value in the first row (="ClassNames") create a new class
-    #         if classnames.values[index] != "None":
-    #             #classinfo["name"] = classname
-    #             classinfo["subjects"] = subjects
-    #             json_data.append(classinfo)
+        # For i in range(number of lines that contain data for this class)
+        for i in range((self.endline)-self.startline):
+            subject = self.subjectnames.values[line]
+            lessons = self.subjectlessons.values[line]
+            coef = self.subjectcoefs.values[line]
+            combiname = self.combinames.values[line]
+            combicoef = self.combicoefs.values[line]
 
-    #             classinfo = {}
+            # If there is a subject
+            if subject != "None":
+                # If there were combi subjects in the subject before, save them and reset combi subjects list
+                if len(self.current_combis) > 0:
+                    self.current_subject["subsubjects"] = self.current_combis
+                    self.current_combis = []
+                    self.current_subject = {}
 
-    #             classinfo["name"] = classnames.values[index]
-    #             subjects = []
-    #             combis = []
-    #             coefficient = None
+                # Update the coefficient if there is a new one
+                if coef != "None":
+                    self.current_coef = coef
 
-    #         if subjectnames.values[index] != "None":
-    #             subject = {}
+                self.current_subject["name"] = subject
+                self.current_subject["lessons"] = lessons
+                self.current_subject["coef"] = self.current_coef
 
-    #             ## If this is the first subject with a coefficient store it for the subjects under this one
-    #             if subjectcoefs.values[index] != "None":
-    #                 coefficient = subjectcoefs.values[index]
+                # If there is a combi subject
+                if combiname != "None":
+                    self.current_combis.append({
+                        "name": combiname,
+                        "coef": combicoef
+                    })
 
-    #             if combinames.values[index] != "None":
-    #                 combis.append(
-    #                     {
-    #                         "name": combinames.values[index],
-    #                         "coef": combicoefs.values[index]
-    #                     }
-    #                 )
+                self.subjects.append(self.current_subject)
 
-    #                 index += 1
-    #                 stop_iteration = False
+                # If this subject does not have any combi subjects, clear it so we can proceed to the next subject
+                if len(self.current_combis) < 1:
+                    self.current_subject = {}
 
-    #                 while not stop_iteration:
-    #                     ## If there is a subject in the combi section append it to the list
-    #                     if combinames.values[index] != "None" and subjectnames.values[index] == "None":
-    #                         combis.append(
-    #                             {
-    #                                 "name": combinames.values[index],
-    #                                 "coef": combicoefs.values[index]
-    #                             }
-    #                         )
-    #                     if subjectnames.values[index] != "None":
-    #                         #print(subjectnames.values[index])
-    #                         stop_iteration = True
+            # If there is no subject but a combi subject, add it to the last known subject as combi subject
+            if subject == "None":
+                if combiname != "None":
+                    self.current_combis.append({
+                        "name": combiname,
+                        "coef": combicoef
+                    })
 
-    #                     index += 1
-    #                     ## If there is a subject in the combi section one line lower and no new main subject at this line, redo the process but 1 line lower
-    #                     #if combinames.values[temp_index+1] != "None" and subjectnames.values[temp_index+1] == "None":
-    #                         #temp_index += 1
-                        
-    #                     ## If there is no combi subject below or if a new main subject started (which means that the combi subjects belong to the new main subject and no longer to this one)
-    #                     #if combinames.values[temp_index+1] == "None" or subjectnames.values[temp_index+1] != "None":
-    #                         #print(combis)
-    #                         #print(combinames.values[temp_index+1], subjectnames.values[temp_index+1])
-    #                         #stop_iteration = True
-
-                
-    #             print(combis)
-    #             #if len(combis) > 0:
-    #                 #json_data.append(combis)
-
-    #             subject["name"] = subjectnames.values[index]
-    #             subject["lessons"] = subjectlessons.values[index]
-    #             subject["coef"] = coefficient
-    #             subject["subsubjects"] = combis
-
-    #             subjects.append(subject)
-
-
-
-
-
-        ## Increase the current index after one block has been converted to get to the next block
-        #current_index += 1
-
-
-    #with open("output/out.json", "w", encoding="utf-8") as _file:
-        #json.dump(json_data, _file, ensure_ascii=False)
-    #print(json_data)
-
-
-def get_combis(temp_combis, combinames, combicoefs, index:int) -> list[dict, dict]:
-    temp_combis.append(
-        {
-            "name": combinames.values[index],
-            "coef": combicoefs.values[index]
-        }
-    )
-
-    if combinames.values[index+1] != "None":
-        get_combis(temp_combis, combinames, combicoefs, index)
-
-
-
+            # Go to the next line
+            line += 1
 
 
 if __name__ == "__main__":
-    ## If user wants to parse specific files
+    # If user wants to parse specific files
     if ARGS.files:
         for file in ARGS.files:
             filepath = Path(file)
             if filepath.is_file():
                 parse_excel_file(str(file))
             else:
-                print(f"[Invalid File]: The following file was skipped as the path is incorrect '{file}'")
+                print(
+                    f"[Invalid File]: The following file was skipped as the path is incorrect '{file}'")
     else:
         for file in EXCEL_FILES:
             filepath = Path(file)
             if filepath.is_file():
                 parse_excel_file(str(file))
             else:
-                print(f"[Invalid File]: The following file was skipped as the path is incorrect '{file}'")
-
+                print(
+                    f"[Invalid File]: The following file was skipped as the path is incorrect '{file}'")
