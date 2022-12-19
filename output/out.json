@@ -10321,5 +10321,490 @@
                 "coef": 0.0
             }
         ]
+    },
+    {
+        "name": "1CA-COUC",
+        "subjects": [
+            {
+                "name": "Francais",
+                "lessons": 5.0,
+                "coef": 4.0
+            },
+            {
+                "name": "Allemand",
+                "lessons": 5.0,
+                "coef": 4.0
+            },
+            {
+                "name": "Anglais",
+                "lessons": 5.0,
+                "coef": 4.0
+            },
+            {
+                "name": "4e langue",
+                "lessons": 5.0,
+                "coef": 4.0
+            },
+            {
+                "name": "Philosophie",
+                "lessons": 3.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Histoire",
+                "lessons": 2.0,
+                "coef": 2.0
+            },
+            {
+                "name": "Economie",
+                "lessons": 2.0,
+                "coef": 2.0
+            },
+            {
+                "name": "Cours complémentaires",
+                "lessons": 2.0,
+                "coef": 2.0
+            },
+            {
+                "name": "Sport",
+                "lessons": 1.0,
+                "coef": 1.0
+            }
+        ]
+    },
+    {
+        "name": "1CB-COUC",
+        "subjects": [
+            {
+                "name": "Mathé/Info",
+                "lessons": 6.0,
+                "coef": 4.0,
+                "subsubjects": [
+                    {
+                        "name": "Mathématiques 2",
+                        "coef": 0.6666666666666666
+                    },
+                    {
+                        "name": "Informatique",
+                        "coef": 0.3333333333333333
+                    }
+                ]
+            },
+            {
+                "name": "Francais",
+                "lessons": 3.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Allemand",
+                "lessons": 3.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Anglais",
+                "lessons": 3.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Mathématiques 1",
+                "lessons": 4.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Physique",
+                "lessons": 4.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Chimie",
+                "lessons": 4.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Philosophie",
+                "lessons": 2.0,
+                "coef": 2.0
+            },
+            {
+                "name": "Histoire",
+                "lessons": 2.0,
+                "coef": 2.0
+            },
+            {
+                "name": "Economie",
+                "lessons": 2.0,
+                "coef": 2.0
+            },
+            {
+                "name": "Cours complémentaires",
+                "lessons": 2.0,
+                "coef": 2.0
+            },
+            {
+                "name": "Sport",
+                "lessons": 1.0,
+                "coef": 1.0
+            }
+        ]
+    },
+    {
+        "name": "1CC-COUC",
+        "subjects": [
+            {
+                "name": "Biologie",
+                "lessons": 4.0,
+                "coef": 4.0
+            },
+            {
+                "name": "Francais",
+                "lessons": 3.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Allemand",
+                "lessons": 3.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Anglais",
+                "lessons": 3.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Mathématiques",
+                "lessons": 6.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Physique",
+                "lessons": 4.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Chimie",
+                "lessons": 4.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Philosophie",
+                "lessons": 2.0,
+                "coef": 2.0
+            },
+            {
+                "name": "Histoire",
+                "lessons": 2.0,
+                "coef": 2.0
+            },
+            {
+                "name": "Economie",
+                "lessons": 2.0,
+                "coef": 2.0
+            },
+            {
+                "name": "Cours complémentaires",
+                "lessons": 2.0,
+                "coef": 2.0
+            },
+            {
+                "name": "Sport",
+                "lessons": 1.0,
+                "coef": 1.0
+            }
+        ]
+    },
+    {
+        "name": "1CD-COUC",
+        "subjects": [
+            {
+                "name": "EcoPol",
+                "lessons": 4.0,
+                "coef": 4.0
+            },
+            {
+                "name": "Francais",
+                "lessons": 3.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Allemand",
+                "lessons": 3.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Anglais",
+                "lessons": 3.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Mathématiques",
+                "lessons": 5.0,
+                "coef": 3.0
+            },
+            {
+                "name": "EcoGest",
+                "lessons": 4.0,
+                "coef": 3.0,
+                "subsubjects": [
+                    {
+                        "name": "Socom",
+                        "coef": 0.5
+                    },
+                    {
+                        "name": "Statistique/Proba",
+                        "coef": 0.5
+                    }
+                ]
+            },
+            {
+                "name": "Philosophie",
+                "lessons": 3.0,
+                "coef": 2.0
+            },
+            {
+                "name": "Histoire",
+                "lessons": 2.0,
+                "coef": 2.0
+            },
+            {
+                "name": "Cours complémentaires",
+                "lessons": 2.0,
+                "coef": 2.0
+            },
+            {
+                "name": "Sport",
+                "lessons": 1.0,
+                "coef": 1.0
+            }
+        ]
+    },
+    {
+        "name": "1CE-COUC",
+        "subjects": [
+            {
+                "name": "Artistique 1",
+                "lessons": 6.0,
+                "coef": 4.0,
+                "subsubjects": [
+                    {
+                        "name": "Dessin",
+                        "coef": 0.6666666666666666
+                    },
+                    {
+                        "name": "ComVu",
+                        "coef": 0.3333333333333333
+                    }
+                ]
+            },
+            {
+                "name": "Francais",
+                "lessons": 3.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Allemand",
+                "lessons": 3.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Anglais",
+                "lessons": 3.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Artistique 2",
+                "lessons": 4.0,
+                "coef": 3.0,
+                "subsubjects": [
+                    {
+                        "name": "Design",
+                        "coef": 0.6666666666666666
+                    },
+                    {
+                        "name": "Géométrie",
+                        "coef": 0.3333333333333333
+                    }
+                ]
+            },
+            {
+                "name": "HistoArt",
+                "lessons": 3.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Mathématiques",
+                "lessons": 3.0,
+                "coef": 2.0
+            },
+            {
+                "name": "Philosophie",
+                "lessons": 3.0,
+                "coef": 2.0
+            },
+            {
+                "name": "HistoMusique",
+                "lessons": 2.0,
+                "coef": 2.0
+            },
+            {
+                "name": "Cours complémentaires",
+                "lessons": 2.0,
+                "coef": 2.0
+            },
+            {
+                "name": "Sport",
+                "lessons": 1.0,
+                "coef": 1.0
+            }
+        ]
+    },
+    {
+        "name": "1CF-COUC",
+        "subjects": [
+            {
+                "name": "Musique/Analyse",
+                "lessons": 6.0,
+                "coef": 4.0,
+                "subsubjects": [
+                    {
+                        "name": "Théorie",
+                        "coef": 0.5
+                    },
+                    {
+                        "name": "Analyse",
+                        "coef": 0.5
+                    }
+                ]
+            },
+            {
+                "name": "Francais",
+                "lessons": 3.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Allemand",
+                "lessons": 3.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Anglais",
+                "lessons": 3.0,
+                "coef": 3.0
+            },
+            {
+                "name": "HistoMusique",
+                "lessons": 4.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Chorale/Instrument",
+                "lessons": 3.0,
+                "coef": 3.0,
+                "subsubjects": [
+                    {
+                        "name": "Chorale",
+                        "coef": 0.6666666666666666
+                    },
+                    {
+                        "name": "Instrument",
+                        "coef": 0.3333333333333333
+                    }
+                ]
+            },
+            {
+                "name": "Mathématiques",
+                "lessons": 3.0,
+                "coef": 2.0
+            },
+            {
+                "name": "Philosophie",
+                "lessons": 3.0,
+                "coef": 2.0
+            },
+            {
+                "name": "HistoArt",
+                "lessons": 2.0,
+                "coef": 2.0
+            },
+            {
+                "name": "Cours complémentaires",
+                "lessons": 2.0,
+                "coef": 2.0
+            },
+            {
+                "name": "Sport",
+                "lessons": 1.0,
+                "coef": 1.0
+            }
+        ]
+    },
+    {
+        "name": "1CG-COUC",
+        "subjects": [
+            {
+                "name": "Sciences sociales",
+                "lessons": 4.0,
+                "coef": 4.0
+            },
+            {
+                "name": "Francais",
+                "lessons": 3.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Allemand",
+                "lessons": 3.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Anglais",
+                "lessons": 3.0,
+                "coef": 3.0
+            },
+            {
+                "name": "Histo/Géo",
+                "lessons": 4.0,
+                "coef": 3.0,
+                "subsubjects": [
+                    {
+                        "name": "Histoire",
+                        "coef": 0.5
+                    },
+                    {
+                        "name": "Géographie",
+                        "coef": 0.5
+                    }
+                ]
+            },
+            {
+                "name": "Mathématiques",
+                "lessons": 3.0,
+                "coef": 2.0
+            },
+            {
+                "name": "Philosophie",
+                "lessons": 3.0,
+                "coef": 2.0
+            },
+            {
+                "name": "EcoPol",
+                "lessons": 2.0,
+                "coef": 2.0
+            },
+            {
+                "name": "HistoArt",
+                "lessons": 2.0,
+                "coef": 2.0
+            },
+            {
+                "name": "Cours complémentaires",
+                "lessons": 2.0,
+                "coef": 2.0
+            },
+            {
+                "name": "Sport",
+                "lessons": 1.0,
+                "coef": 1.0
+            }
+        ]
     }
 ]
