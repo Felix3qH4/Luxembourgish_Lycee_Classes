@@ -2,7 +2,7 @@ import argparse
 from pathlib import Path
 import pandas as pd
 import json
-
+import uuid
 
 # Command line
 PARSER = argparse.ArgumentParser(description="Type --help for help")
@@ -16,6 +16,9 @@ PARSER.add_argument("-l", "--lessons", action="store_false",
                     help="If flag is used, number of lessons won't be stored")
 PARSER.add_argument("-s", "--sublessons", action="store_false",
                     help="If flag is used, sublessons won't be stored (= lessons that are made up of multiple lessons will only have the main lesson name saved but not the lessons it is composed from")
+PARSER.add_argument("-u", "--uuid", action="store_true",
+                    help="If used, each class and each subject will get a uuid in the json file ( 'id': uuid() )")
+
 
 ARGS = PARSER.parse_args()
 # / Command line /
@@ -128,8 +131,13 @@ class CLASS():
         self.current_combis = []
 
         # Representation of the class which will then be written to the output file
-        self.class_repr = {
-            "name": self.classnames.values[startline], "subjects": self.subjects}
+        self.class_repr = {}
+
+        if ARGS.uuid:
+            self.class_repr["id"] = str(uuid.uuid4())
+
+        self.class_repr["name"] = self.classnames.values[startline]
+        self.class_repr["subjects"] = self.subjects
 
         # Parse the lines to complete the data about this class
         self.build()
@@ -162,7 +170,11 @@ class CLASS():
                 if coef != "None":
                     self.current_coef = coef
 
+                if ARGS.uuid:
+                    self.current_subject["id"] = str(uuid.uuid4())
+
                 self.current_subject["name"] = subject
+
                 if ARGS.lessons:
                     self.current_subject["lessons"] = lessons
 
@@ -172,6 +184,7 @@ class CLASS():
                 # If there is a combi subject
                 if combiname != "None":
                     self.current_combis.append({
+                        "id": str(uuid.uuid4()),
                         "name": combiname,
                         "coef": combicoef
                     })
@@ -187,6 +200,7 @@ class CLASS():
             if subject == "None":
                 if combiname != "None":
                     self.current_combis.append({
+                        "id": str(uuid.uuid4()),
                         "name": combiname,
                         "coef": combicoef
                     })
