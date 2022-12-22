@@ -3,10 +3,9 @@ Contains all classes which are in the Horaire et Programme and have their lesson
 Classes where there are no coefficients available are not in this collection.
 
 Missing:
+- Classique:
+    - 2BI-FR
 - 2BI-FR
 - 1BI-FR
 - 2BI-EN
 - 1BI-EN
-
-
-page 119
