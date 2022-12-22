@@ -30,7 +30,8 @@ This script converts the .xlsx file to a .json file and adds the UUID if asked f
 To use it, open a terminal in the directory of the file and enter 'python exceltojson.py' followed by the arguments you want.
 Available arguments are:
 - '-f {filename}'
-    - To pass the files you want to convert to json files. If not used, the files that will be converted are 'Classique_Classes.xlsx'
+    - To pass the files you want to convert to json files. If not used, the files that will be converted are:
+        - 'Classique_Classes.xlsx'
 - -c
     - If used, the coefficients of the subjects will not be stored in the json file
 - -l
