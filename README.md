@@ -17,3 +17,21 @@ Missing:
 
 - Enseignement Germano-Luxembourgeois:
     - All
+
+
+
+Exceltojson.py - Usage:
+
+This script converts the .xlsx file to a .json file and adds the UUID if asked for.
+To use it, open a terminal in the directory of the file and enter 'python exceltojson.py' followed by the arguments you want.
+Available arguments are:
+- '-f {filename}'
+    - To pass the files you want to convert to json files. If not used, the files that will be converted are 'Classique_Classes.xlsx'
+- -c
+    - If used, the coefficients of the subjects will not be stored in the json file
+- -l
+    - If used, the number of lessons per subject won't be stored in the json file
+- -s
+    - If used, no subsubjects will be stored but only the main subject that is composed of the subsubjects
+- -u
+    - If used, each class, subject and subsubject will get an UUID in the json file like follows: 'id': 'UUID'
